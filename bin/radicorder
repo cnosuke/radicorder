@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+require "radicorder"
+require "thor"
+
+module Radicorder
+  class CLI < Thor
+    class_option :time, aliases: '-t', desc: 'recording time range', required: true
+    class_option :channel, aliases: '-c', desc: 'recording Channel ID', required: true
+    class_option :flvout, desc: 'output flv file path', required: true
+    class_option :mp3out, desc: 'output mp3 file path', required: true
+
+    default_task :record
+
+    option :convert, type: :boolean, aliases: '-v', desc: 'convert to mp3'
+    desc "record", "record Radiko"
+    def record
+      recorder = Radicorder::Recorder.ready(
+        options[:time],
+        options[:channel],
+        options[:flvout],
+        options[:mp3out]
+        )
+      recorder.authenticate!
+      recorder.record!
+      if options[:convert]
+        recorder.convert!
+      end
+    end
+
+    desc "version", "version"
+    def version
+      puts Radicorder::VERSION
+    end
+  end
+end
+
+Radicorder::CLI.start
