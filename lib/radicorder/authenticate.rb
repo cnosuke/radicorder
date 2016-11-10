@@ -7,10 +7,10 @@ module Radicorder
   class Authenticater
     class << self
       def header
-        @@header ||= { 
+        @@header ||= {
           "pragma" => "no-cache",
-          "X-Radiko-App" => "pc_1",
-          "X-Radiko-App-Version" => "2.0.1",
+          "X-Radiko-App" => "pc_ts",
+          "X-Radiko-App-Version" => "4.0.1",
           "X-Radiko-User" => "test-stream",
           "X-Radiko-Device" => "pc"
         }
@@ -21,7 +21,7 @@ module Radicorder
       end
 
       def auth_token
-        @@auth_token ||= auth1_body["X-Radiko-AuthToken"] || auth1_body["X-Radiko-AuthToken".upcase] 
+        @@auth_token ||= auth1_body["X-Radiko-AuthToken"] || auth1_body["X-Radiko-AuthToken".upcase]
       end
 
       def auth_key_length
@@ -86,7 +86,7 @@ module Radicorder
 
       def swfextract(player_file_path, authkey_file_path)
         system(
-          "#{Radicorder::SWFEXTRACT_PATH} -b 14 #{player_file_path} -o #{authkey_file_path}"
+          "#{Radicorder::SWFEXTRACT_PATH} -b 12 #{player_file_path} -o #{authkey_file_path}"
           )
       end
 
